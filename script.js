@@ -9,8 +9,26 @@ if (localStorage.getItem(key)) {
 }
 for (let j = 0; j < bookArray.length; j++) {
   carrello.innerHTML += `
-          <li class="list-group-item">${bookArray[j].title}</li>`;
+  <li class="list-group-item d-flex justify-content-between"><span class="span">
+              ${bookArray[j].title}</span><a href="javascript:void(0)" class="btn btn-danger canccar"
+                >Scarta</a
+              >
+            </li>
+          `;
 }
+
+const canccar = document.getElementsByClassName("canccar");
+for (j = 0; j < canccar.length; j++) {
+  canccar[j].addEventListener("click", (e) => {
+    let ar = JSON.parse(localStorage.getItem(key));
+    let t = e.target.closest(".list-group-item");
+    let text = t.querySelector("span").innerText;
+    ar.filter((p) => p.title !== text);
+    localStorage.setItem(key, JSON.stringify(ar));
+    t.style.display = "none";
+  });
+}
+
 const getData = function () {
   fetch("https://striveschool-api.herokuapp.com/books")
     .then((res) => {
@@ -61,7 +79,12 @@ const getData = function () {
           localStorage.setItem(key, JSON.stringify(bookArray));
 
           carrello.innerHTML += `
-          <li class="list-group-item">${book.title}</li>`;
+          <li class="list-group-item d-flex justify-content-between"><span class="span">
+              ${book.title}</span><a href="javascript:void(0)" class="btn btn-danger canccar"
+                >Scarta</a
+              >
+            </li>
+          `;
         });
       }
     })

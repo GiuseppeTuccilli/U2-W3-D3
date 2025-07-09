@@ -23,9 +23,12 @@ for (j = 0; j < canccar.length; j++) {
     let ar = JSON.parse(localStorage.getItem(key));
     let t = e.target.closest(".list-group-item");
     let text = t.querySelector("span").innerText;
-    ar.filter((p) => p.title !== text);
+    console.log(text);
+    let ind = ar.findIndex((p) => p.title === text);
+    ar.splice(ind, 1);
     localStorage.setItem(key, JSON.stringify(ar));
-    t.style.display = "none";
+    console.log(ar);
+    t.style.visibility = "hidden";
   });
 }
 

@@ -19,22 +19,7 @@ for (let j = 0; j < bookArray.length; j++) {
           `;
 }
 
-/*const canccar = document.getElementsByClassName("canccar");
-for (j = 0; j < canccar.length; j++) {
-  canccar[j].addEventListener("click", (e) => {
-    let ar = JSON.parse(localStorage.getItem(key));
-    let t = e.target.closest(".list-group-item");
-    let text = t.querySelector("span").innerText;
-    console.log(text);
-    let ind = ar.findIndex((p) => p.title === text);
-    ar.splice(ind, 1);
-    localStorage.setItem(key, JSON.stringify(ar));
-    console.log(ar);
-    t.style.visibility = "hidden";
-  });
-}*/
-
-const scarta = function (e) {
+/*const scarta = function (e) {
   let ar = JSON.parse(localStorage.getItem(key));
   let t = e.target.closest(".list-group-item");
   let text = t.querySelector("span").innerText;
@@ -43,6 +28,18 @@ const scarta = function (e) {
   ar.splice(ind, 1);
   localStorage.setItem(key, JSON.stringify(ar));
   console.log(ar);
+  t.remove();
+};*/
+
+const scarta = function (e) {
+  //let ar = JSON.parse(localStorage.getItem(key));
+  let t = e.target.closest(".list-group-item");
+  let text = t.querySelector("span").innerText;
+  console.log(text);
+  let ind = bookArray.findIndex((p) => p.title === text);
+  bookArray.splice(ind, 1);
+  localStorage.setItem(key, JSON.stringify(bookArray));
+  console.log(bookArray);
   t.remove();
 };
 
@@ -92,7 +89,8 @@ const getData = function () {
           console.log(cont.querySelector("h5").textContent);
           let book = data.find((p) => p.title === h);
           console.log(book);
-          bookArray.push(data.find((p) => p.title === h));
+          bookArray.push(book);
+          // bookArray.push(data.find((p) => p.title === h));
           localStorage.setItem(key, JSON.stringify(bookArray));
 
           carrello.innerHTML += `

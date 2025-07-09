@@ -1,3 +1,17 @@
+const bookArray = [];
+const key = "key";
+const aggiungi = document.getElementsByClassName("aggiungi");
+const scartaButtons = document.getElementsByClassName("pippo");
+const carrello = document.getElementById("carrello");
+console.log(JSON.parse(localStorage.getItem(key)));
+if (localStorage.getItem(key)) {
+  for (let i = 0; i < JSON.parse(localStorage.getItem(key)).lengt; i++) {
+    console.log(localStorage.getItem(key));
+    carrello.innerHTML += `<li class="list-group-item">${JSON.parse(
+      localStorage.getItem(key).title
+    )}</li>`;
+  }
+}
 const getData = function () {
   fetch("https://striveschool-api.herokuapp.com/books")
     .then((res) => {
@@ -13,7 +27,7 @@ const getData = function () {
       const cards = document.getElementById("cards-row");
       for (let i = 0; i < data.length; i++) {
         cards.innerHTML += `<div class="col col-12 col-md-6 col-lg-4 mb-3">
-            <div class="card " style="height: 400px" >
+            <div class="card " style="height: 450px" >
               <img
                 src=${data[i].img}
                 class="card-img-top"
@@ -23,17 +37,32 @@ const getData = function () {
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${data[i].title}</h5>
                 <p class="card-text flex-grow-1">Prezzo: <span class="price">${data[i].price}</span>$</p>
+                <a href="javascript:void(0)" class="btn btn-success mb-1 aggiungi" >Aggiungi al carrello</a>
                 <a href="javascript:void(0)" class="btn btn-danger pippo" >Scarta</a>
               </div>
             </div>
           </div>`;
       }
 
-      const scartaButtons = document.getElementsByClassName("pippo");
       for (let i = 0; i < scartaButtons.length; i++) {
         scartaButtons[i].addEventListener("click", (e) => {
           console.log(e.target.closest(".col"));
           e.target.closest(".col").style.display = "none";
+        });
+      }
+
+      for (let i = 0; i < aggiungi.length; i++) {
+        aggiungi[i].addEventListener("click", (e) => {
+          let cont = e.target.closest(".card-body");
+          let h = cont.querySelector("h5").textContent;
+          console.log(cont.querySelector("h5").textContent);
+          let book = data.find((p) => p.title === h);
+          console.log(book);
+          bookArray.push(data.find((p) => p.title === h));
+          localStorage.setItem(key, JSON.stringify(bookArray));
+
+          carrello.innerHTML += `
+          <li class="list-group-item">${book.title}</li>`;
         });
       }
     })

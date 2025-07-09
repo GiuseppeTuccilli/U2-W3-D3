@@ -41,7 +41,7 @@ const scarta = function (e) {
   ar.splice(ind, 1);
   localStorage.setItem(key, JSON.stringify(ar));
   console.log(ar);
-  t.style.visibility = "hidden";
+  t.remove();
 };
 
 const getData = function () {

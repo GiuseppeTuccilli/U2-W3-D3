@@ -4,6 +4,7 @@ const key = "key";
 const aggiungi = document.getElementsByClassName("aggiungi");
 const scartaButtons = document.getElementsByClassName("pippo");
 const carrello = document.getElementById("carrello");
+const cards = document.getElementById("cards-row");
 
 console.log(JSON.parse(localStorage.getItem(key)));
 
@@ -21,6 +22,27 @@ for (let j = 0; j < bookArray.length; j++) {
             </li>
           `;
 }
+
+const drawCards = function () {
+  for (let i = 0; i < fdata.length; i++) {
+    cards.innerHTML += `<div class="col col-12 col-md-6 col-lg-4 mb-3">
+            <div class="card " style="height: 450px" >
+              <img
+                src=${fdata[i].img}
+                class="card-img-top"
+                alt="copertina"
+                style="height: 200px; width: auto; object-fit: contain "
+              />
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">${fdata[i].title}</h5>
+                <p class="card-text flex-grow-1">Prezzo: <span class="price">${fdata[i].price}</span>$</p>
+                <a href="javascript:void(0)" class="btn btn-success mb-1 aggiungi" onclick="aggiungiCarrello(event)" >Aggiungi al carrello</a>
+                <a href="javascript:void(0)" class="btn btn-danger pippo" onclick="elimina(event)" >Scarta</a>
+              </div>
+            </div>
+          </div>`;
+  }
+};
 
 const scarta = function (e) {
   let t = e.target.closest(".list-group-item");
@@ -67,27 +89,9 @@ const getData = function () {
     })
     .then((data) => {
       console.log(data);
-      const cards = document.getElementById("cards-row");
-      for (let i = 0; i < data.length; i++) {
-        cards.innerHTML += `<div class="col col-12 col-md-6 col-lg-4 mb-3">
-            <div class="card " style="height: 450px" >
-              <img
-                src=${data[i].img}
-                class="card-img-top"
-                alt="copertina"
-                style="height: 200px; width: auto; object-fit: contain "
-              />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">${data[i].title}</h5>
-                <p class="card-text flex-grow-1">Prezzo: <span class="price">${data[i].price}</span>$</p>
-                <a href="javascript:void(0)" class="btn btn-success mb-1 aggiungi" onclick="aggiungiCarrello(event)" >Aggiungi al carrello</a>
-                <a href="javascript:void(0)" class="btn btn-danger pippo" onclick="elimina(event)" >Scarta</a>
-              </div>
-            </div>
-          </div>`;
-      }
 
       fdata = data;
+      drawCards();
     })
     .catch((err) => {
       console.log("errore", err);

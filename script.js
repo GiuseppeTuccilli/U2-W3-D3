@@ -6,6 +6,8 @@ const carrello = document.getElementById("carrello");
 console.log(JSON.parse(localStorage.getItem(key)));
 if (localStorage.getItem(key)) {
   bookArray = JSON.parse(localStorage.getItem(key));
+} else {
+  bookArray = [];
 }
 for (let j = 0; j < bookArray.length; j++) {
   carrello.innerHTML += `

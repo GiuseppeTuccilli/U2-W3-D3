@@ -1,16 +1,15 @@
-const bookArray = [];
+let bookArray = [];
 const key = "key";
 const aggiungi = document.getElementsByClassName("aggiungi");
 const scartaButtons = document.getElementsByClassName("pippo");
 const carrello = document.getElementById("carrello");
 console.log(JSON.parse(localStorage.getItem(key)));
 if (localStorage.getItem(key)) {
-  for (let i = 0; i < JSON.parse(localStorage.getItem(key)).lengt; i++) {
-    console.log(localStorage.getItem(key));
-    carrello.innerHTML += `<li class="list-group-item">${JSON.parse(
-      localStorage.getItem(key).title
-    )}</li>`;
-  }
+  bookArray = JSON.parse(localStorage.getItem(key));
+}
+for (let j = 0; j < bookArray.length; j++) {
+  carrello.innerHTML += `
+          <li class="list-group-item">${bookArray[j].title}</li>`;
 }
 const getData = function () {
   fetch("https://striveschool-api.herokuapp.com/books")

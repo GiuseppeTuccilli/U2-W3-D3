@@ -1,9 +1,12 @@
 let bookArray = [];
+let fdata = [];
 const key = "key";
 const aggiungi = document.getElementsByClassName("aggiungi");
 const scartaButtons = document.getElementsByClassName("pippo");
 const carrello = document.getElementById("carrello");
+
 console.log(JSON.parse(localStorage.getItem(key)));
+
 if (localStorage.getItem(key)) {
   bookArray = JSON.parse(localStorage.getItem(key));
 } else {
@@ -19,20 +22,7 @@ for (let j = 0; j < bookArray.length; j++) {
           `;
 }
 
-/*const scarta = function (e) {
-  let ar = JSON.parse(localStorage.getItem(key));
-  let t = e.target.closest(".list-group-item");
-  let text = t.querySelector("span").innerText;
-  console.log(text);
-  let ind = ar.findIndex((p) => p.title === text);
-  ar.splice(ind, 1);
-  localStorage.setItem(key, JSON.stringify(ar));
-  console.log(ar);
-  t.remove();
-};*/
-
 const scarta = function (e) {
-  //let ar = JSON.parse(localStorage.getItem(key));
   let t = e.target.closest(".list-group-item");
   let text = t.querySelector("span").innerText;
   console.log(text);
@@ -41,6 +31,28 @@ const scarta = function (e) {
   localStorage.setItem(key, JSON.stringify(bookArray));
   console.log(bookArray);
   t.remove();
+};
+
+const aggiungiCarrello = function (e) {
+  let cont = e.target.closest(".card-body");
+  let h = cont.querySelector("h5").textContent;
+  console.log(cont.querySelector("h5").textContent);
+  let book = fdata.find((p) => p.title === h);
+  console.log(book);
+  bookArray.push(book);
+  localStorage.setItem(key, JSON.stringify(bookArray));
+  carrello.innerHTML += `
+          <li class="list-group-item d-flex justify-content-between"><span class="span">
+              ${book.title}</span><a onclick="scarta(event)" href="javascript:void(0)" class="btn btn-danger canccar"
+                >Scarta</a
+              >
+            </li>
+          `;
+};
+
+const elimina = function (e) {
+  console.log(e.target.closest(".col"));
+  e.target.closest(".col").style.display = "none";
 };
 
 const getData = function () {
@@ -68,40 +80,14 @@ const getData = function () {
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${data[i].title}</h5>
                 <p class="card-text flex-grow-1">Prezzo: <span class="price">${data[i].price}</span>$</p>
-                <a href="javascript:void(0)" class="btn btn-success mb-1 aggiungi" >Aggiungi al carrello</a>
-                <a href="javascript:void(0)" class="btn btn-danger pippo" >Scarta</a>
+                <a href="javascript:void(0)" class="btn btn-success mb-1 aggiungi" onclick="aggiungiCarrello(event)" >Aggiungi al carrello</a>
+                <a href="javascript:void(0)" class="btn btn-danger pippo" onclick="elimina(event)" >Scarta</a>
               </div>
             </div>
           </div>`;
       }
 
-      for (let i = 0; i < scartaButtons.length; i++) {
-        scartaButtons[i].addEventListener("click", (e) => {
-          console.log(e.target.closest(".col"));
-          e.target.closest(".col").style.display = "none";
-        });
-      }
-
-      for (let i = 0; i < aggiungi.length; i++) {
-        aggiungi[i].addEventListener("click", (e) => {
-          let cont = e.target.closest(".card-body");
-          let h = cont.querySelector("h5").textContent;
-          console.log(cont.querySelector("h5").textContent);
-          let book = data.find((p) => p.title === h);
-          console.log(book);
-          bookArray.push(book);
-          // bookArray.push(data.find((p) => p.title === h));
-          localStorage.setItem(key, JSON.stringify(bookArray));
-
-          carrello.innerHTML += `
-          <li class="list-group-item d-flex justify-content-between"><span class="span">
-              ${book.title}</span><a onclick="scarta(event)" href="javascript:void(0)" class="btn btn-danger canccar"
-                >Scarta</a
-              >
-            </li>
-          `;
-        });
-      }
+      fdata = data;
     })
     .catch((err) => {
       console.log("errore", err);
